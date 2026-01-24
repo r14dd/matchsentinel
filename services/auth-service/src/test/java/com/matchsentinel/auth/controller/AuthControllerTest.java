@@ -1,13 +1,13 @@
 package com.matchsentinel.auth.controller;
 
 import com.matchsentinel.auth.dto.AuthResponse;
+import com.matchsentinel.auth.security.JwtAuthenticationFilter;
+import com.matchsentinel.auth.security.JwtService;
 import com.matchsentinel.auth.service.AuthService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,22 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class AuthControllerTest {
 
-    private final MockMvc mockMvc;
-    private final AuthService authService;
+    @org.springframework.beans.factory.annotation.Autowired
+    private MockMvc mockMvc;
 
-    AuthControllerTest(MockMvc mockMvc, AuthService authService) {
-        this.mockMvc = mockMvc;
-        this.authService = authService;
-    }
+    @MockBean
+    private AuthService authService;
 
-    @TestConfiguration
-    static class TestConfig {
+    @MockBean
+    private JwtService jwtService;
 
-        @Bean
-        AuthService authService() {
-            return Mockito.mock(AuthService.class);
-        }
-    }
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Test
     void register_returnsCreated() throws Exception {
@@ -45,6 +40,8 @@ class AuthControllerTest {
                 .id(UUID.randomUUID())
                 .email("test@example.com")
                 .token("token")
+                .refreshToken("refresh")
+                .verificationToken("verify")
                 .message("Registration successful")
                 .build();
 
@@ -54,7 +51,7 @@ class AuthControllerTest {
         String body = """
                 {
                   "email": "test@example.com",
-                  "password": "password"
+                  "password": "password1"
                 }
                 """;
 
@@ -71,6 +68,7 @@ class AuthControllerTest {
                 .id(UUID.randomUUID())
                 .email("test@example.com")
                 .token("token")
+                .refreshToken("refresh")
                 .message("Login successful")
                 .build();
 
@@ -80,7 +78,7 @@ class AuthControllerTest {
         String body = """
                 {
                   "email": "test@example.com",
-                  "password": "password"
+                  "password": "password1"
                 }
                 """;
 
@@ -96,7 +94,7 @@ class AuthControllerTest {
         String body = """
                 {
                   "email": "not-an-email",
-                  "password": "password"
+                  "password": "password1"
                 }
                 """;
 
@@ -104,5 +102,49 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void refresh_returnsOk() throws Exception {
+        AuthResponse response = AuthResponse.builder()
+                .id(UUID.randomUUID())
+                .email("test@example.com")
+                .token("token")
+                .refreshToken("refresh")
+                .message("Token refreshed")
+                .build();
+
+        when(authService.refresh(anyString()))
+                .thenReturn(response);
+
+        String body = """
+                {
+                  "refreshToken": "refresh"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/refresh")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value("token"));
+    }
+
+    @Test
+    void verifyEmail_returnsOk() throws Exception {
+        when(authService.verifyEmail(anyString()))
+                .thenReturn(new com.matchsentinel.auth.dto.SimpleResponse("Email verified successfully"));
+
+        String body = """
+                {
+                  "token": "verify"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/verify-email")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Email verified successfully"));
     }
 }

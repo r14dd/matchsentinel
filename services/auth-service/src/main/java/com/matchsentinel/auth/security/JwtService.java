@@ -62,6 +62,10 @@ public class JwtService {
         return parseAllClaims(token).get("role", String.class);
     }
 
+    public Instant extractExpiration(String token) {
+        return parseAllClaims(token).getExpiration().toInstant();
+    }
+
     private Claims parseAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)

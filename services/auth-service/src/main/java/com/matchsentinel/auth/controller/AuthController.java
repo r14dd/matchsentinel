@@ -2,7 +2,12 @@ package com.matchsentinel.auth.controller;
 
 import com.matchsentinel.auth.dto.AuthResponse;
 import com.matchsentinel.auth.dto.LoginRequest;
+import com.matchsentinel.auth.dto.RefreshRequest;
 import com.matchsentinel.auth.dto.RegisterRequest;
+import com.matchsentinel.auth.dto.SimpleResponse;
+import com.matchsentinel.auth.dto.TokenIntrospectionRequest;
+import com.matchsentinel.auth.dto.TokenIntrospectionResponse;
+import com.matchsentinel.auth.dto.VerifyEmailRequest;
 import com.matchsentinel.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +31,24 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request) {
+        AuthResponse response = authService.refresh(request.getRefreshToken());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<SimpleResponse> verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
+        SimpleResponse response = authService.verifyEmail(request.getToken());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/introspect")
+    public ResponseEntity<TokenIntrospectionResponse> introspect(@Valid @RequestBody TokenIntrospectionRequest request) {
+        TokenIntrospectionResponse response = authService.introspect(request.getToken());
         return ResponseEntity.ok(response);
     }
 }

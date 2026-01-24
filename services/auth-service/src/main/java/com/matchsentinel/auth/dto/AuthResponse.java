@@ -20,6 +20,8 @@ public class AuthResponse {
     private Role role;
     private Instant createdAt;
     private String token;
+    private String refreshToken;
+    private String verificationToken;
     private String message;
     
 }
