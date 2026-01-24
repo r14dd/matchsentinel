@@ -1,18 +1,31 @@
 package com.matchsentinel.auth.controller;
 
+import com.matchsentinel.auth.dto.AuthResponse;
+import com.matchsentinel.auth.dto.LoginRequest;
 import com.matchsentinel.auth.dto.RegisterRequest;
+import com.matchsentinel.auth.service.AuthService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
+    private final AuthService authService;
+
     @PostMapping("/register")
-    public ResponseEntity<String> register(
-            @Valid @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok("Registration request received");
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse response = authService.register(request.getEmail(), request.getPassword());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        AuthResponse response = authService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
     }
 }
