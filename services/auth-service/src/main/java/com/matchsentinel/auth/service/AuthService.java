@@ -1,5 +1,6 @@
 package com.matchsentinel.auth.service;
 
+import com.matchsentinel.auth.dto.AuthMeResponse;
 import com.matchsentinel.auth.dto.AuthResponse;
 import com.matchsentinel.auth.dto.SimpleResponse;
 import com.matchsentinel.auth.dto.TokenIntrospectionResponse;
@@ -159,6 +160,19 @@ public class AuthService {
                 jwtService.extractEmail(token),
                 jwtService.extractRole(token),
                 jwtService.extractExpiration(token)
+        );
+    }
+
+    public AuthMeResponse me(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new InvalidCredentialsException("User not found"));
+        return new AuthMeResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getLastLoginAt(),
+                user.isEmailVerified()
         );
     }
 

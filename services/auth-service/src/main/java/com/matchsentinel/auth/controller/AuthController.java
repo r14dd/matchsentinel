@@ -1,5 +1,6 @@
 package com.matchsentinel.auth.controller;
 
+import com.matchsentinel.auth.dto.AuthMeResponse;
 import com.matchsentinel.auth.dto.AuthResponse;
 import com.matchsentinel.auth.dto.LoginRequest;
 import com.matchsentinel.auth.dto.RefreshRequest;
@@ -14,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -49,6 +53,13 @@ public class AuthController {
     @PostMapping("/introspect")
     public ResponseEntity<TokenIntrospectionResponse> introspect(@Valid @RequestBody TokenIntrospectionRequest request) {
         TokenIntrospectionResponse response = authService.introspect(request.getToken());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<AuthMeResponse> me(Authentication authentication) {
+        UUID userId = (UUID) authentication.getPrincipal();
+        AuthMeResponse response = authService.me(userId);
         return ResponseEntity.ok(response);
     }
 }
