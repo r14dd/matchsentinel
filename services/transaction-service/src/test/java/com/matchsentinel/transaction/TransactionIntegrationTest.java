@@ -14,6 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -21,11 +22,18 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.util.StreamUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
 
-// import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -111,5 +119,15 @@ class TransactionIntegrationTest {
         assertEquals("USD", event.currency());
         assertEquals("US", event.country());
         assertEquals("Integration Merchant", event.merchant());
+
+        String schemaJson = StreamUtils.copyToString(
+                new ClassPathResource("schema/transaction-created-event.schema.json").getInputStream(),
+                StandardCharsets.UTF_8
+        );
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        JsonSchema schema = factory.getSchema(schemaJson);
+        JsonNode eventNode = objectMapper.readTree(objectMapper.writeValueAsString(event));
+        Set<ValidationMessage> errors = schema.validate(eventNode);
+        assertEquals(0, errors.size());
     }
 }

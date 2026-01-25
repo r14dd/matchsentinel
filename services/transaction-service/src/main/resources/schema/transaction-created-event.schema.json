@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matchsentinel.com/schema/transaction-created-event.json",
+  "title": "TransactionCreatedEvent",
+  "type": "object",
+  "required": [
+    "id",
+    "accountId",
+    "amount",
+    "currency",
+    "country",
+    "merchant",
+    "occurredAt",
+    "createdAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "accountId": { "type": "string", "format": "uuid" },
+    "amount": { "type": "number" },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "merchant": { "type": "string", "minLength": 1 },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}
