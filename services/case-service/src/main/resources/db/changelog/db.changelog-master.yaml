@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-cases
+      author: matchsentinel
+      changes:
+        - createTable:
+            tableName: cases
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: assigned_analyst_id
+                  type: uuid
+              - column:
+                  name: risk_score
+                  type: numeric(5,2)
+              - column:
+                  name: reasons
+                  type: text
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: cases
+            indexName: idx_cases_status
+            columns:
+              - column:
+                  name: status
+        - createIndex:
+            tableName: cases
+            indexName: idx_cases_assigned_analyst
+            columns:
+              - column:
+                  name: assigned_analyst_id
+        - createIndex:
+            tableName: cases
+            indexName: idx_cases_transaction
+            columns:
+              - column:
+                  name: transaction_id
