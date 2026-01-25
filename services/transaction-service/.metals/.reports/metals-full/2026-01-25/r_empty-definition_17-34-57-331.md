@@ -1,3 +1,14 @@
+error id: file://<WORKSPACE>/src/main/java/com/matchsentinel/transaction/service/TransactionService.java:org/springframework/data/jpa/domain/Specification#
+file://<WORKSPACE>/src/main/java/com/matchsentinel/transaction/service/TransactionService.java
+empty definition using pc, found symbol in pc: org/springframework/data/jpa/domain/Specification#
+empty definition using semanticdb
+empty definition using fallback
+non-local guesses:
+
+offset: 768
+uri: file://<WORKSPACE>/src/main/java/com/matchsentinel/transaction/service/TransactionService.java
+text:
+```scala
 package com.matchsentinel.transaction.service;
 
 import com.matchsentinel.transaction.domain.Transaction;
@@ -11,7 +22,7 @@ import com.matchsentinel.transaction.repository.TransactionSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.@@Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -56,7 +67,7 @@ public class TransactionService {
             BigDecimal maxAmount,
             Pageable pageable
     ) {
-        Specification<com.matchsentinel.transaction.domain.Transaction> spec = (root, query, cb) -> null;
+        Specification<com.matchsentinel.transaction.domain.Transaction> spec = Specification.where(null);
 
         if (accountId != null) {
             spec = spec.and(TransactionSpecifications.hasAccountId(accountId));
@@ -107,3 +118,10 @@ public class TransactionService {
         );
     }
 }
+
+```
+
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: org/springframework/data/jpa/domain/Specification#
