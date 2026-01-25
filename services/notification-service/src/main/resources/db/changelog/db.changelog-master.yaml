@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-notifications
+      author: matchsentinel
+      changes:
+        - createTable:
+            tableName: notifications
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: case_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_type
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: channel
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: recipient
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payload
+                  type: text
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: notifications
+            indexName: idx_notifications_case_id
+            columns:
+              - column:
+                  name: case_id
