@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.lang.NonNull;
+
+import java.util.Objects;
 
 import java.util.UUID;
 
@@ -27,38 +30,50 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        AuthResponse response = authService.register(request.getEmail(), request.getPassword());
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody @NonNull RegisterRequest request) {
+        AuthResponse response = authService.register(
+                Objects.requireNonNull(request.getEmail(), "email"),
+                Objects.requireNonNull(request.getPassword(), "password")
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        AuthResponse response = authService.login(request.getEmail(), request.getPassword());
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody @NonNull LoginRequest request) {
+        AuthResponse response = authService.login(
+                Objects.requireNonNull(request.getEmail(), "email"),
+                Objects.requireNonNull(request.getPassword(), "password")
+        );
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request) {
-        AuthResponse response = authService.refresh(request.getRefreshToken());
+    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody @NonNull RefreshRequest request) {
+        AuthResponse response = authService.refresh(
+                Objects.requireNonNull(request.getRefreshToken(), "refreshToken")
+        );
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/verify-email")
-    public ResponseEntity<SimpleResponse> verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
-        SimpleResponse response = authService.verifyEmail(request.getToken());
+    public ResponseEntity<SimpleResponse> verifyEmail(@Valid @RequestBody @NonNull VerifyEmailRequest request) {
+        SimpleResponse response = authService.verifyEmail(
+                Objects.requireNonNull(request.getToken(), "token")
+        );
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/introspect")
-    public ResponseEntity<TokenIntrospectionResponse> introspect(@Valid @RequestBody TokenIntrospectionRequest request) {
-        TokenIntrospectionResponse response = authService.introspect(request.getToken());
+    public ResponseEntity<TokenIntrospectionResponse> introspect(@Valid @RequestBody @NonNull TokenIntrospectionRequest request) {
+        TokenIntrospectionResponse response = authService.introspect(
+                Objects.requireNonNull(request.getToken(), "token")
+        );
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AuthMeResponse> me(Authentication authentication) {
-        UUID userId = (UUID) authentication.getPrincipal();
+    public ResponseEntity<AuthMeResponse> me(@NonNull Authentication authentication) {
+        UUID userId = (UUID) Objects.requireNonNull(authentication.getPrincipal(), "principal");
         AuthMeResponse response = authService.me(userId);
         return ResponseEntity.ok(response);
     }

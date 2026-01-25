@@ -21,11 +21,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("null")
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -40,7 +43,7 @@ public class AuthService {
     @Value("${auth.email-verification.expiration-minutes}")
     private long emailVerificationMinutes;
 
-    public AuthResponse register(String email, String rawPassword) {
+    public AuthResponse register(@NonNull String email, @NonNull String rawPassword) {
         String normalizedEmail = email.trim().toLowerCase();
         if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {
             throw new EmailAlreadyInUseException("Email is already in use");
@@ -64,7 +67,7 @@ public class AuthService {
                 .disabled(false)
                 .build();
 
-        User savedUser = userRepository.save(user);
+        User savedUser = Objects.requireNonNull(userRepository.save(user), "savedUser");
         String token = jwtService.generateToken(savedUser);
         RefreshToken refreshToken = refreshTokenService.createForUser(savedUser);
 
@@ -80,7 +83,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse login(String email, String rawPassword) {
+    public AuthResponse login(@NonNull String email, @NonNull String rawPassword) {
         String normalizedEmail = email.trim().toLowerCase();
         loginAttemptService.checkAllowed(normalizedEmail);
         User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
@@ -119,7 +122,7 @@ public class AuthService {
 
     }
 
-    public AuthResponse refresh(String refreshToken) {
+    public AuthResponse refresh(@NonNull String refreshToken) {
         RefreshToken rotated = refreshTokenService.rotate(refreshToken);
         User user = rotated.getUser();
         String token = jwtService.generateToken(user);
@@ -134,7 +137,7 @@ public class AuthService {
                 .build();
     }
 
-    public SimpleResponse verifyEmail(String token) {
+    public SimpleResponse verifyEmail(@NonNull String token) {
         User user = userRepository.findByEmailVerificationToken(token)
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid verification token"));
 
@@ -150,7 +153,7 @@ public class AuthService {
         return new SimpleResponse("Email verified successfully");
     }
 
-    public TokenIntrospectionResponse introspect(String token) {
+    public TokenIntrospectionResponse introspect(@NonNull String token) {
         if (!jwtService.isTokenValid(token)) {
             return new TokenIntrospectionResponse(false, null, null, null, null);
         }
@@ -163,7 +166,7 @@ public class AuthService {
         );
     }
 
-    public AuthMeResponse me(UUID userId) {
+    public AuthMeResponse me(@NonNull UUID userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new InvalidCredentialsException("User not found"));
         return new AuthMeResponse(

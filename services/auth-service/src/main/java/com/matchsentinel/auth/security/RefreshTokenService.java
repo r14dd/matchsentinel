@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Objects;
 
 @Service
+@SuppressWarnings("null")
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
@@ -26,7 +28,7 @@ public class RefreshTokenService {
 
     public RefreshToken createForUser(User user) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .user(user)
+                .user(Objects.requireNonNull(user, "user"))
                 .token(UUID.randomUUID().toString())
                 .expiresAt(Instant.now().plusSeconds(refreshTokenDays * 24 * 60 * 60))
                 .revoked(false)
@@ -47,10 +49,10 @@ public class RefreshTokenService {
         RefreshToken current = validate(token);
         current.setRevoked(true);
         refreshTokenRepository.save(current);
-        return createForUser(current.getUser());
+        return createForUser(Objects.requireNonNull(current.getUser(), "refreshToken.user"));
     }
 
     public void revokeAll(User user) {
-        refreshTokenRepository.deleteAllByUser(user);
+        refreshTokenRepository.deleteAllByUser(Objects.requireNonNull(user, "user"));
     }
 }
