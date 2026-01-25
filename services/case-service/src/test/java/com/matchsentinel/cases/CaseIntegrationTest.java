@@ -1,8 +1,10 @@
 package com.matchsentinel.cases;
 
 import com.matchsentinel.cases.domain.Case;
+import com.matchsentinel.cases.dto.CaseCreatedEvent;
 import com.matchsentinel.cases.dto.TransactionFlaggedEvent;
 import com.matchsentinel.cases.repository.CaseRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -10,6 +12,12 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,10 +54,25 @@ class CaseIntegrationTest {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
+    private AmqpAdmin amqpAdmin;
+
+    @Autowired
+    private DirectExchange outputExchange;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private CaseRepository caseRepository;
 
     @Test
     void createsCaseFromFlaggedEvent() throws InterruptedException {
+        String queueName = "case.created.test." + UUID.randomUUID();
+        Queue queue = QueueBuilder.durable(queueName).build();
+        Binding binding = BindingBuilder.bind(queue).to(outputExchange).with("case.created");
+        amqpAdmin.declareQueue(queue);
+        amqpAdmin.declareBinding(binding);
+
         UUID transactionId = UUID.fromString("11111111-1111-1111-1111-111111111111");
         UUID accountId = UUID.fromString("22222222-2222-2222-2222-222222222222");
         TransactionFlaggedEvent event = new TransactionFlaggedEvent(
@@ -71,6 +94,13 @@ class CaseIntegrationTest {
         assertThat(created).isNotNull();
         assertThat(created.getTransactionId()).isEqualTo(transactionId);
         assertThat(created.getAccountId()).isEqualTo(accountId);
+
+        Object message = rabbitTemplate.receiveAndConvert(queueName, 5000);
+        assertThat(message).isNotNull();
+        CaseCreatedEvent published = objectMapper.convertValue(message, CaseCreatedEvent.class);
+        assertThat(published.caseId()).isEqualTo(created.getId());
+        assertThat(published.transactionId()).isEqualTo(transactionId);
+        assertThat(published.accountId()).isEqualTo(accountId);
     }
 
     private Case awaitCase(UUID transactionId) throws InterruptedException {
