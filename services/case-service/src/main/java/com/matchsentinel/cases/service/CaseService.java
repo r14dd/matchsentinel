@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
@@ -27,6 +28,10 @@ public class CaseService {
     }
 
     public CaseResponse create(CreateCaseRequest request) {
+        repository.findByTransactionId(request.transactionId())
+                .ifPresent(existing -> {
+                    throw new ResponseStatusException(CONFLICT, "Case already exists for transaction");
+                });
         Case entity = new Case();
         entity.setTransactionId(request.transactionId());
         entity.setAccountId(request.accountId());
@@ -37,13 +42,17 @@ public class CaseService {
     }
 
     public CaseResponse createFromFlagged(TransactionFlaggedEvent event) {
-        Case entity = new Case();
-        entity.setTransactionId(event.transactionId());
-        entity.setAccountId(event.accountId());
-        entity.setRiskScore(event.riskScore());
-        entity.setReasons(ReasonsCodec.encode(event.reasons()));
-        Case saved = repository.save(entity);
-        return toResponse(saved);
+        return repository.findByTransactionId(event.transactionId())
+                .map(this::toResponse)
+                .orElseGet(() -> {
+                    Case entity = new Case();
+                    entity.setTransactionId(event.transactionId());
+                    entity.setAccountId(event.accountId());
+                    entity.setRiskScore(event.riskScore());
+                    entity.setReasons(ReasonsCodec.encode(event.reasons()));
+                    Case saved = repository.save(entity);
+                    return toResponse(saved);
+                });
     }
 
     public CaseResponse get(UUID id) {

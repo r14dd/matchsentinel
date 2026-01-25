@@ -64,3 +64,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: transaction_id
+  - changeSet:
+      id: 002-unique-transaction
+      author: matchsentinel
+      changes:
+        - addUniqueConstraint:
+            tableName: cases
+            columnNames: transaction_id
+            constraintName: uq_cases_transaction
