@@ -1,0 +1,76 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-flagged-transactions
+      author: matchsentinel
+      changes:
+        - createTable:
+            tableName: flagged_transactions
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: merchant
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: occurred_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reasons
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: risk_score
+                  type: numeric(5,2)
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: flagged_transactions
+            indexName: idx_flagged_transactions_account_id
+            columns:
+              - column:
+                  name: account_id
+        - createIndex:
+            tableName: flagged_transactions
+            indexName: idx_flagged_transactions_transaction_id
+            columns:
+              - column:
+                  name: transaction_id
