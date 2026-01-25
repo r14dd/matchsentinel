@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-transactions
+      author: matchsentinel
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: merchant
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: occurred_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: transactions
+            indexName: idx_transactions_account_id
+            columns:
+              - column:
+                  name: account_id
+        - createIndex:
+            tableName: transactions
+            indexName: idx_transactions_occurred_at
+            columns:
+              - column:
+                  name: occurred_at
