@@ -4,12 +4,17 @@ import com.matchsentinel.transaction.domain.Transaction;
 import com.matchsentinel.transaction.dto.CreateTransactionRequest;
 import com.matchsentinel.transaction.dto.TransactionResponse;
 import com.matchsentinel.transaction.exception.NotFoundException;
+import com.matchsentinel.transaction.messaging.TransactionCreatedEvent;
+import com.matchsentinel.transaction.messaging.TransactionEventPublisher;
 import com.matchsentinel.transaction.repository.TransactionRepository;
+import com.matchsentinel.transaction.repository.TransactionSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -18,6 +23,7 @@ import java.util.UUID;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final TransactionEventPublisher eventPublisher;
 
     public TransactionResponse create(CreateTransactionRequest request) {
         Transaction transaction = Transaction.builder()
@@ -31,6 +37,7 @@ public class TransactionService {
                 .build();
 
         Transaction saved = transactionRepository.save(transaction);
+        eventPublisher.publishTransactionCreated(toEvent(saved));
         return toResponse(saved);
     }
 
@@ -40,13 +47,55 @@ public class TransactionService {
         return toResponse(transaction);
     }
 
-    public Page<TransactionResponse> list(Pageable pageable) {
-        return transactionRepository.findAll(pageable)
+    public Page<TransactionResponse> list(
+            UUID accountId,
+            String country,
+            Instant from,
+            Instant to,
+            BigDecimal minAmount,
+            BigDecimal maxAmount,
+            Pageable pageable
+    ) {
+        Specification<com.matchsentinel.transaction.domain.Transaction> spec = Specification.where(null);
+
+        if (accountId != null) {
+            spec = spec.and(TransactionSpecifications.hasAccountId(accountId));
+        }
+        if (country != null && !country.isBlank()) {
+            spec = spec.and(TransactionSpecifications.hasCountry(country.toUpperCase()));
+        }
+        if (from != null) {
+            spec = spec.and(TransactionSpecifications.occurredAfter(from));
+        }
+        if (to != null) {
+            spec = spec.and(TransactionSpecifications.occurredBefore(to));
+        }
+        if (minAmount != null) {
+            spec = spec.and(TransactionSpecifications.amountGte(minAmount));
+        }
+        if (maxAmount != null) {
+            spec = spec.and(TransactionSpecifications.amountLte(maxAmount));
+        }
+
+        return transactionRepository.findAll(spec, pageable)
                 .map(this::toResponse);
     }
 
     private TransactionResponse toResponse(Transaction transaction) {
         return new TransactionResponse(
+                transaction.getId(),
+                transaction.getAccountId(),
+                transaction.getAmount(),
+                transaction.getCurrency(),
+                transaction.getCountry(),
+                transaction.getMerchant(),
+                transaction.getOccurredAt(),
+                transaction.getCreatedAt()
+        );
+    }
+
+    private TransactionCreatedEvent toEvent(Transaction transaction) {
+        return new TransactionCreatedEvent(
                 transaction.getId(),
                 transaction.getAccountId(),
                 transaction.getAmount(),

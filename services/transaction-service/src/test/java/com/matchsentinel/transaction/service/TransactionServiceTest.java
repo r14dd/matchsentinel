@@ -3,6 +3,7 @@ package com.matchsentinel.transaction.service;
 import com.matchsentinel.transaction.domain.Transaction;
 import com.matchsentinel.transaction.dto.CreateTransactionRequest;
 import com.matchsentinel.transaction.exception.NotFoundException;
+import com.matchsentinel.transaction.messaging.TransactionEventPublisher;
 import com.matchsentinel.transaction.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +28,9 @@ class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+
+    @Mock
+    private TransactionEventPublisher eventPublisher;
 
     @InjectMocks
     private TransactionService transactionService;
@@ -60,6 +65,7 @@ class TransactionServiceTest {
         assertNotNull(response.id());
         assertEquals("USD", response.currency());
         assertEquals("US", response.country());
+        verify(eventPublisher).publishTransactionCreated(any());
     }
 
     @Test
