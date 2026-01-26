@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-daily-stats
+      author: matchsentinel
+      changes:
+        - createTable:
+            tableName: daily_stats
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: stat_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_transactions
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: flagged_transactions
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cases_created
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: notifications_sent
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: daily_stats
+            columnNames: stat_date
+            constraintName: uq_daily_stats_date
