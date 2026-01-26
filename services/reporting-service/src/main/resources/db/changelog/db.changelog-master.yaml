@@ -51,3 +51,30 @@ databaseChangeLog:
             tableName: daily_stats
             columnNames: stat_date
             constraintName: uq_daily_stats_date
+  - changeSet:
+      id: 002-create-processed-events
+      author: matchsentinel
+      changes:
+        - createTable:
+            tableName: processed_events
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: event_key
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: processed_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: processed_events
+            columnNames: event_key
+            constraintName: uq_processed_events_key

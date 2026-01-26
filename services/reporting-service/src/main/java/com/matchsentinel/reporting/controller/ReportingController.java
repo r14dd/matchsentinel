@@ -2,9 +2,11 @@ package com.matchsentinel.reporting.controller;
 
 import com.matchsentinel.reporting.dto.CreateDailyStatRequest;
 import com.matchsentinel.reporting.dto.DailyStatResponse;
+import com.matchsentinel.reporting.dto.RollupResponse;
 import com.matchsentinel.reporting.service.ReportingService;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.PageImpl;
@@ -51,5 +53,23 @@ public class ReportingController {
             return new PageImpl<>(List.of(stat), pageable, 1);
         }
         return reportingService.list(pageable);
+    }
+
+    @GetMapping("/rollups/weekly")
+    public RollupResponse weeklyRollup(
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date
+    ) {
+        return reportingService.weeklyRollup(date);
+    }
+
+    @GetMapping("/rollups/monthly")
+    public RollupResponse monthlyRollup(
+            @RequestParam(required = false)
+            @DateTimeFormat(pattern = "yyyy-MM")
+            YearMonth month
+    ) {
+        return reportingService.monthlyRollup(month);
     }
 }

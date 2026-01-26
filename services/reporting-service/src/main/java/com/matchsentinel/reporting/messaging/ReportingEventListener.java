@@ -19,22 +19,22 @@ public class ReportingEventListener {
 
     @RabbitListener(queues = "${reporting.rabbit.transaction.queue}")
     public void onTransactionCreated(TransactionCreatedEvent event) {
-        updateService.incrementTransactions(event.occurredAt());
+        updateService.incrementTransactions(event.occurredAt(), "transaction.created:" + event.id());
     }
 
     @RabbitListener(queues = "${reporting.rabbit.flagged.queue}")
     public void onTransactionFlagged(TransactionFlaggedEvent event) {
-        updateService.incrementFlagged(event.flaggedAt());
+        updateService.incrementFlagged(event.flaggedAt(), "transaction.flagged:" + event.transactionId());
     }
 
     @RabbitListener(queues = "${reporting.rabbit.case.queue}")
     public void onCaseCreated(CaseCreatedEvent event) {
         LocalDate date = event.createdAt().toLocalDate();
-        updateService.incrementCasesCreated(date);
+        updateService.incrementCasesCreated(date, "case.created:" + event.caseId());
     }
 
     @RabbitListener(queues = "${reporting.rabbit.notification.queue}")
     public void onNotificationSent(NotificationSentEvent event) {
-        updateService.incrementNotificationsSent(event.sentAt());
+        updateService.incrementNotificationsSent(event.sentAt(), "notification.sent:" + event.notificationId());
     }
 }
