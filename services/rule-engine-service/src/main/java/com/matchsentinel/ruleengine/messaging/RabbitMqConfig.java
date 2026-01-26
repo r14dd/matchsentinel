@@ -30,7 +30,19 @@ public class RabbitMqConfig {
     }
 
     @Bean
+    public DirectExchange aiInputExchange(
+            @Value("${ruleengine.ai.input.exchange}") String exchangeName
+    ) {
+        return new DirectExchange(exchangeName);
+    }
+
+    @Bean
     public Queue inputQueue(@Value("${ruleengine.rabbit.input.queue}") String queueName) {
+        return QueueBuilder.durable(queueName).build();
+    }
+
+    @Bean
+    public Queue aiInputQueue(@Value("${ruleengine.ai.input.queue}") String queueName) {
         return QueueBuilder.durable(queueName).build();
     }
 
@@ -41,6 +53,15 @@ public class RabbitMqConfig {
             @Value("${ruleengine.rabbit.input.routing-key}") String routingKey
     ) {
         return BindingBuilder.bind(inputQueue).to(inputExchange).with(routingKey);
+    }
+
+    @Bean
+    public Binding aiInputBinding(
+            Queue aiInputQueue,
+            DirectExchange aiInputExchange,
+            @Value("${ruleengine.ai.input.routing-key}") String routingKey
+    ) {
+        return BindingBuilder.bind(aiInputQueue).to(aiInputExchange).with(routingKey);
     }
 
     @Bean

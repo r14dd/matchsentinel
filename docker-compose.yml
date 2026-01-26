@@ -1,0 +1,220 @@
+services:
+  postgres-auth:
+    image: postgres:16
+    container_name: matchsentinel-postgres-auth
+    environment:
+      POSTGRES_DB: matchsentinel_auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+
+  postgres-transaction:
+    image: postgres:16
+    container_name: matchsentinel-postgres-transaction
+    environment:
+      POSTGRES_DB: matchsentinel_transaction
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_transaction_data:/var/lib/postgresql/data
+
+  postgres-rule-engine:
+    image: postgres:16
+    container_name: matchsentinel-postgres-rule-engine
+    environment:
+      POSTGRES_DB: matchsentinel_rule_engine
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_rule_engine_data:/var/lib/postgresql/data
+
+  postgres-case:
+    image: postgres:16
+    container_name: matchsentinel-postgres-case
+    environment:
+      POSTGRES_DB: matchsentinel_cases
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_case_data:/var/lib/postgresql/data
+
+  postgres-notification:
+    image: postgres:16
+    container_name: matchsentinel-postgres-notification
+    environment:
+      POSTGRES_DB: matchsentinel_notifications
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres_notification_data:/var/lib/postgresql/data
+
+  postgres-reporting:
+    image: postgres:16
+    container_name: matchsentinel-postgres-reporting
+    environment:
+      POSTGRES_DB: matchsentinel_reporting
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres_reporting_data:/var/lib/postgresql/data
+
+  postgres-ai:
+    image: postgres:16
+    container_name: matchsentinel-postgres-ai
+    environment:
+      POSTGRES_DB: matchsentinel_ai
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5439:5432"
+    volumes:
+      - postgres_ai_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: matchsentinel-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    container_name: matchsentinel-auth-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5432/matchsentinel_auth
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      AUTH_JWT_SECRET: change-me-please-change-me-please-change-me-please
+      AUTH_CORS_ORIGINS: http://localhost:3000
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres-auth
+      - rabbitmq
+
+  transaction-service:
+    build:
+      context: ./services/transaction-service/
+      dockerfile: Dockerfile
+    container_name: matchsentinel-transaction-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-transaction:5432/matchsentinel_transaction
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 8082
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-transaction
+      - rabbitmq
+
+  rule-engine-service:
+    build:
+      context: ./services/rule-engine-service
+      dockerfile: Dockerfile
+    container_name: matchsentinel-rule-engine-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-rule-engine:5432/matchsentinel_rule_engine
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 8083
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres-rule-engine
+      - rabbitmq
+
+  case-service:
+    build:
+      context: ./services/case-service
+      dockerfile: Dockerfile
+    container_name: matchsentinel-case-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-case:5432/matchsentinel_cases
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 8084
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres-case
+      - rabbitmq
+
+  notification-service:
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    container_name: matchsentinel-notification-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-notification:5432/matchsentinel_notifications
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 8085
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres-notification
+      - rabbitmq
+
+  reporting-service:
+    build:
+      context: ./services/reporting-service
+      dockerfile: Dockerfile
+    container_name: matchsentinel-reporting-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-reporting:5432/matchsentinel_reporting
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 8086
+    ports:
+      - "8086:8086"
+    depends_on:
+      - postgres-reporting
+      - rabbitmq
+
+  ai-service:
+    build:
+      context: ./services/ai-service
+      dockerfile: Dockerfile
+    container_name: matchsentinel-ai-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-ai:5432/matchsentinel_ai
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 8087
+    ports:
+      - "8087:8087"
+    depends_on:
+      - postgres-ai
+      - rabbitmq
+
+volumes:
+  postgres_auth_data:
+  postgres_transaction_data:
+  postgres_rule_engine_data:
+  postgres_case_data:
+  postgres_notification_data:
+  postgres_reporting_data:
+  postgres_ai_data:

@@ -3,6 +3,7 @@ package com.matchsentinel.ruleengine.service;
 import com.matchsentinel.ruleengine.domain.FlaggedTransaction;
 import com.matchsentinel.ruleengine.dto.TransactionCreatedEvent;
 import com.matchsentinel.ruleengine.dto.TransactionFlaggedEvent;
+import com.matchsentinel.ruleengine.dto.TransactionScoredEvent;
 import com.matchsentinel.ruleengine.messaging.RuleEngineEventPublisher;
 import com.matchsentinel.ruleengine.repository.FlaggedTransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,13 @@ public class RuleEngineService {
     @Value("${ruleengine.rules.high-risk-countries}")
     private String highRiskCountries;
 
+    @Value("${ruleengine.ai.threshold}")
+    private BigDecimal aiThreshold;
+
     public void evaluate(TransactionCreatedEvent event) {
+        if (repository.findByTransactionId(event.id()).isPresent()) {
+            return;
+        }
         List<String> reasons = new ArrayList<>();
 
         if (event.amount().compareTo(amountThreshold) >= 0) {
@@ -58,6 +65,49 @@ public class RuleEngineService {
                 .createdAt(Instant.now())
                 .reasons(String.join(",", reasons))
                 .riskScore(riskScore)
+                .build());
+
+        eventPublisher.publishTransactionFlagged(new TransactionFlaggedEvent(
+                saved.getTransactionId(),
+                saved.getAccountId(),
+                saved.getAmount(),
+                saved.getCurrency(),
+                saved.getCountry(),
+                saved.getMerchant(),
+                saved.getOccurredAt(),
+                saved.getCreatedAt(),
+                saved.getRiskScore(),
+                reasons
+        ));
+    }
+
+    public void evaluateAi(TransactionScoredEvent event) {
+        if (repository.findByTransactionId(event.transactionId()).isPresent()) {
+            return;
+        }
+        if (event.riskScore().compareTo(aiThreshold) < 0) {
+            return;
+        }
+
+        List<String> reasons = new ArrayList<>();
+        if (event.reasons() != null) {
+            reasons.addAll(event.reasons());
+        }
+        if (reasons.isEmpty()) {
+            reasons.add("AI_SCORE");
+        }
+
+        FlaggedTransaction saved = repository.save(FlaggedTransaction.builder()
+                .transactionId(event.transactionId())
+                .accountId(event.accountId())
+                .amount(event.amount())
+                .currency(event.currency())
+                .country(event.country())
+                .merchant(event.merchant())
+                .occurredAt(event.occurredAt())
+                .createdAt(event.scoredAt())
+                .reasons(String.join(",", reasons))
+                .riskScore(event.riskScore())
                 .build());
 
         eventPublisher.publishTransactionFlagged(new TransactionFlaggedEvent(
