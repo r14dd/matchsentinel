@@ -4,6 +4,8 @@ import com.matchsentinel.notification.domain.Notification;
 import com.matchsentinel.notification.domain.NotificationChannel;
 import com.matchsentinel.notification.domain.NotificationStatus;
 import com.matchsentinel.notification.dto.CaseCreatedEvent;
+import com.matchsentinel.notification.dto.NotificationSentEvent;
+import com.matchsentinel.notification.messaging.NotificationEventPublisher;
 import com.matchsentinel.notification.dto.NotificationResponse;
 import com.matchsentinel.notification.repository.NotificationRepository;
 import java.util.UUID;
@@ -19,9 +21,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class NotificationService {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
     private final NotificationRepository repository;
+    private final NotificationEventPublisher eventPublisher;
 
-    public NotificationService(NotificationRepository repository) {
+    public NotificationService(NotificationRepository repository, NotificationEventPublisher eventPublisher) {
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
     }
 
     public NotificationResponse createFromCaseCreated(CaseCreatedEvent event) {
@@ -35,6 +39,12 @@ public class NotificationService {
 
         Notification saved = repository.save(notification);
         logger.info("Notification sent for caseId={} via channel={}", event.caseId(), notification.getChannel());
+        eventPublisher.publishNotificationSent(new NotificationSentEvent(
+                saved.getId(),
+                saved.getCaseId(),
+                saved.getChannel().name(),
+                saved.getCreatedAt().toInstant()
+        ));
         return toResponse(saved);
     }
 

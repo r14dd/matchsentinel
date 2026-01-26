@@ -21,6 +21,11 @@ public class RabbitMqConfig {
     }
 
     @Bean
+    public DirectExchange outputExchange(@Value("${notification.rabbit.output.exchange}") String exchangeName) {
+        return new DirectExchange(exchangeName);
+    }
+
+    @Bean
     public Queue inputQueue(@Value("${notification.rabbit.input.queue}") String queueName) {
         return QueueBuilder.durable(queueName).build();
     }
