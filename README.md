@@ -3,7 +3,7 @@
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-matchsentinel)
 
-# ➤ 🛡️ MatchSentinel
+# ➤ MatchSentinel
 ### **Live Fraud Defense Platform**
 
 **Transaction Intelligence → AI Risk Scoring → Rule Engine Flags → Case Ops → Notifications → Reporting**
@@ -92,9 +92,11 @@ MatchSentinel is a real, event‑driven fraud defense platform that **actually r
 
 ## ➤ 🚀 Quickstart (Docker)
 
+<div align="left">
 ```bash
 docker compose up -d --build
 ```
+</div>
 
 ---
 
@@ -103,16 +105,22 @@ docker compose up -d --build
 
 ## ➤ 🎛️ Run the UI (Live Dashboard)
 
+<div align="left">
+
+<div align="left">
 ```bash
 cd ui
 npm install
 npm run dev
 ```
+</div>
+</div>
 
 Open: **http://localhost:5173**
 
 Ensure these env vars exist in `ui/.env`:
 
+<div align="left">
 ```
 VITE_TRANSACTION_SERVICE_URL=http://localhost:8082
 VITE_RULE_ENGINE_URL=http://localhost:8083
@@ -121,6 +129,7 @@ VITE_NOTIFICATION_SERVICE_URL=http://localhost:8085
 VITE_REPORTING_SERVICE_URL=http://localhost:8086
 VITE_AI_SERVICE_URL=http://localhost:8087
 ```
+</div>
 
 ---
 
@@ -146,9 +155,8 @@ Expected flow:
 
 ## ➤ 🔬 Manual smoke test (API)
 
+<div align="left">
 ```bash
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#create-a-transaction)
 
 # ➤ Create a transaction
 curl -s -X POST http://localhost:8082/api/transactions \
@@ -162,36 +170,22 @@ curl -s -X POST http://localhost:8082/api/transactions \
     "occurredAt":"2026-01-26T10:15:30Z"
   }' | jq .
 
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#ai-decision)
-
 # ➤ AI Decision
 curl -s "http://localhost:8087/api/ai/decisions?transactionId=<TX_ID>" | jq .
-
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#flags)
 
 # ➤ Flags
 curl -s "http://localhost:8083/api/flags" | jq .
 
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#cases)
-
 # ➤ Cases
 curl -s "http://localhost:8084/api/cases" | jq .
-
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#notifications)
 
 # ➤ Notifications
 curl -s "http://localhost:8085/api/notifications" | jq .
 
-
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#reporting)
-
 # ➤ Reporting
 curl -s "http://localhost:8086/api/reports/daily?date=2026-01-26" | jq .
 ```
+</div>
 
 ---
 
@@ -203,10 +197,12 @@ curl -s "http://localhost:8086/api/reports/daily?date=2026-01-26" | jq .
 Each service supports unit + integration tests (Testcontainers for Postgres/RabbitMQ).
 
 Example:
+<div align="left">
 ```bash
 cd services/reporting-service
 ./mvnw -Pintegration-tests -Dtest=ReportingIntegrationTest test
 ```
+</div>
 
 ---
 
@@ -252,9 +248,16 @@ cd services/reporting-service
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-license)
 
-## ➤ 📄 License
+---
 
-MIT (or specify your own)
+## ➤ Authors
+
+- [Riad Mukhtarov](https://www.linkedin.com/in/riadmukhtarov/)
 
 ---
+## ➤ License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
 </div>
