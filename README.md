@@ -9,14 +9,18 @@
 
 Built as a production‑style, end‑to‑end system with Spring Boot microservices, RabbitMQ, PostgreSQL + Liquibase, and a cinematic React + Vite analyst dashboard.
 
-<p align="center">
+
+<p align="center" width="100%">
+  
 [![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=fff)](#)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.x-6DB33F?logo=springboot&logoColor=fff)](#)
 [![RabbitMQ](https://img.shields.io/badge/RabbitMQ-Event%20Bus-FF6600?logo=rabbitmq&logoColor=fff)](#)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Data-336791?logo=postgresql&logoColor=fff)](#)
 [![Vite](https://img.shields.io/badge/Vite-UI-646CFF?logo=vite&logoColor=fff)](#)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?logo=typescript&logoColor=fff)](#)
+
 </p>
+</div>
 
 <p align="center">
   <img src="docs/demo-ui.gif" width="1000" alt="MatchSentinel Live Dashboard Demo"/>
