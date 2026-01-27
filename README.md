@@ -119,6 +119,61 @@ curl -s http://localhost:8087/actuator/health | jq .
 
 ---
 
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-deployment-vm-quickstart)
+
+## ➤ ☁️ Deployment (VM Quickstart)
+
+> Target: a single cloud VM (AWS EC2 / Azure VM / GCP Compute) running Docker + Docker Compose.
+
+### 1) Install Docker + Compose
+Use your provider’s official install guide for the VM OS.
+
+### 2) Clone & start
+```bash
+git clone https://github.com/r14dd/matchsentinel.git
+cd matchsentinel
+docker compose up -d --build
+```
+
+### 3) Required ports (security group / firewall)
+```
+8081-8087  (services)
+5433-5439  (Postgres)  # optional if DBs are only internal
+5672       (RabbitMQ)
+15672      (RabbitMQ UI)
+5173       (UI dev server, optional)
+```
+
+> Recommended: expose only 8081–8087 (and 5173 if needed). Keep Postgres/RabbitMQ private or use managed services (RDS / Cloud SQL / CloudAMQP).
+
+### 4) Production envs (recommended)
+Set these for each service (via `docker-compose.yml` or env files):
+```
+SPRING_PROFILES_ACTIVE=prod
+RABBITMQ_HOST=rabbitmq
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=guest
+APP_CORS_ALLOWED_ORIGINS=http://<your-vm-ip>:5173
+```
+
+Database envs per service (examples):
+```
+AUTH_DB_URL=jdbc:postgresql://postgres-auth:5432/matchsentinel_auth
+TRANSACTION_DB_URL=jdbc:postgresql://postgres-transaction:5432/matchsentinel_transaction
+RULE_ENGINE_DB_URL=jdbc:postgresql://postgres-rule-engine:5432/matchsentinel_rule_engine
+CASE_DB_URL=jdbc:postgresql://postgres-case:5432/matchsentinel_cases
+NOTIFICATION_DB_URL=jdbc:postgresql://postgres-notification:5432/matchsentinel_notifications
+REPORTING_DB_URL=jdbc:postgresql://postgres-reporting:5432/matchsentinel_reporting
+SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-ai:5432/matchsentinel_ai
+```
+
+### 5) Verify health
+```bash
+curl -s http://<your-vm-ip>:8082/actuator/health | jq .
+```
+
+---
+
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-run-the-ui-live-dashboard)
 
@@ -268,4 +323,3 @@ cd services/reporting-service
 ## ➤ License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
