@@ -66,9 +66,7 @@ MatchSentinel is a real, event‑driven fraud defense platform that **actually r
 
 ## ➤ 🏗️ Architecture (high‑level)
 
-```
 ![MatchSentinel Architecture](docs/diagram-architecture.png)
-```
 
 ---
 
