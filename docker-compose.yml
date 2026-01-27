@@ -96,11 +96,15 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-auth-service
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5432/matchsentinel_auth
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      AUTH_DB_URL: jdbc:postgresql://postgres-auth:5432/matchsentinel_auth
+      AUTH_DB_USER: postgres
+      AUTH_DB_PASSWORD: postgres
       AUTH_JWT_SECRET: change-me-please-change-me-please-change-me-please
-      AUTH_CORS_ORIGINS: http://localhost:3000
+      AUTH_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8081
     ports:
       - "8081:8081"
@@ -114,10 +118,14 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-transaction-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-transaction:5432/matchsentinel_transaction
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: prod
+      TRANSACTION_DB_URL: jdbc:postgresql://postgres-transaction:5432/matchsentinel_transaction
+      TRANSACTION_DB_USER: postgres
+      TRANSACTION_DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8082
     ports:
       - "8082:8082"
@@ -131,10 +139,14 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-rule-engine-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-rule-engine:5432/matchsentinel_rule_engine
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: prod
+      RULE_ENGINE_DB_URL: jdbc:postgresql://postgres-rule-engine:5432/matchsentinel_rule_engine
+      RULE_ENGINE_DB_USER: postgres
+      RULE_ENGINE_DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8083
     ports:
       - "8083:8083"
@@ -148,10 +160,14 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-case-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-case:5432/matchsentinel_cases
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: prod
+      CASE_DB_URL: jdbc:postgresql://postgres-case:5432/matchsentinel_cases
+      CASE_DB_USER: postgres
+      CASE_DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8084
     ports:
       - "8084:8084"
@@ -165,10 +181,14 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-notification-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-notification:5432/matchsentinel_notifications
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: prod
+      NOTIFICATION_DB_URL: jdbc:postgresql://postgres-notification:5432/matchsentinel_notifications
+      NOTIFICATION_DB_USER: postgres
+      NOTIFICATION_DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8085
     ports:
       - "8085:8085"
@@ -182,10 +202,14 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-reporting-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-reporting:5432/matchsentinel_reporting
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: prod
+      REPORTING_DB_URL: jdbc:postgresql://postgres-reporting:5432/matchsentinel_reporting
+      REPORTING_DB_USER: postgres
+      REPORTING_DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8086
     ports:
       - "8086:8086"
@@ -199,10 +223,14 @@ services:
       dockerfile: Dockerfile
     container_name: matchsentinel-ai-service
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-ai:5432/matchsentinel_ai
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USER: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
       SERVER_PORT: 8087
     ports:
       - "8087:8087"

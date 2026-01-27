@@ -82,6 +82,11 @@ type AiDecision = {
   createdAt: string
 }
 
+type ServiceHealth = {
+  status: string
+  checkedAt: string
+}
+
 function App() {
   const [flags, setFlags] = useState<Page<Flag> | null>(null)
   const [cases, setCases] = useState<Page<CaseItem> | null>(null)
@@ -133,11 +138,15 @@ function App() {
       return {}
     }
   })
+  const [healthStatus, setHealthStatus] = useState<Record<string, ServiceHealth>>({})
+  const [healthLoading, setHealthLoading] = useState(false)
+  const [healthError, setHealthError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const endpoints = useMemo(
     () => ({
+      auth: import.meta.env.VITE_AUTH_SERVICE_URL ?? 'http://localhost:8081',
       transaction: import.meta.env.VITE_TRANSACTION_SERVICE_URL ?? 'http://localhost:8082',
       ruleEngine: import.meta.env.VITE_RULE_ENGINE_URL ?? 'http://localhost:8083',
       cases: import.meta.env.VITE_CASE_SERVICE_URL ?? 'http://localhost:8084',
@@ -146,6 +155,19 @@ function App() {
       ai: import.meta.env.VITE_AI_SERVICE_URL ?? 'http://localhost:8087',
     }),
     []
+  )
+
+  const healthServices = useMemo(
+    () => [
+      { key: 'auth', label: 'Auth', url: endpoints.auth },
+      { key: 'transaction', label: 'Transaction', url: endpoints.transaction },
+      { key: 'ruleEngine', label: 'Rule Engine', url: endpoints.ruleEngine },
+      { key: 'cases', label: 'Case', url: endpoints.cases },
+      { key: 'notifications', label: 'Notification', url: endpoints.notifications },
+      { key: 'reporting', label: 'Reporting', url: endpoints.reporting },
+      { key: 'ai', label: 'AI', url: endpoints.ai },
+    ],
+    [endpoints]
   )
 
   const today = useMemo(() => new Date().toISOString().slice(0, 10), [])
@@ -279,14 +301,40 @@ function App() {
     setLoading(false)
   }
 
+  const refreshHealth = async () => {
+    setHealthLoading(true)
+    setHealthError(null)
+    const checks = await Promise.all(
+      healthServices.map(async (service) => {
+        const data = await fetchJson<{ status: string }>(`${service.url}/actuator/health`)
+        return {
+          key: service.key,
+          status: data?.status ?? 'DOWN',
+          checkedAt: new Date().toISOString(),
+        }
+      })
+    )
+    const next: Record<string, ServiceHealth> = {}
+    for (const check of checks) {
+      next[check.key] = { status: check.status, checkedAt: check.checkedAt }
+    }
+    setHealthStatus(next)
+    if (checks.some((check) => check.status !== 'UP')) {
+      setHealthError('One or more services are unhealthy.')
+    }
+    setHealthLoading(false)
+  }
+
   useEffect(() => {
     refreshAll()
+    refreshHealth()
   }, [])
 
   useEffect(() => {
     if (!autoRefresh) return
     const handle = window.setInterval(() => {
       refreshAll()
+      refreshHealth()
     }, Math.max(5, refreshEvery) * 1000)
     return () => window.clearInterval(handle)
   }, [autoRefresh, refreshEvery])
@@ -530,6 +578,24 @@ function App() {
           <a href="#notifications">Notifications</a>
           <a href="#ai">AI Decisions</a>
         </nav>
+        <div className="sidebar-health">
+          <div className="sidebar-health-head">
+            <p>Service Health</p>
+            <span>{healthLoading ? '…' : 'Live'}</span>
+          </div>
+          <ul>
+            {healthServices.map((service) => {
+              const status = healthStatus[service.key]?.status ?? 'UNKNOWN'
+              return (
+                <li key={service.key}>
+                  <span className={`dot ${status.toLowerCase()}`} />
+                  <span>{service.label}</span>
+                  <span className="status">{status}</span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
         <div className="sidebar-foot">
           <p>Services: Auth · Transaction · Rule Engine · Case · Notification · Reporting · AI</p>
         </div>
@@ -568,6 +634,7 @@ function App() {
         </header>
 
         {error && <div className="alert">{error}</div>}
+        {healthError && <div className="alert">{healthError}</div>}
 
         <section id="dashboard" className="section">
           <div className="section-head">
@@ -579,6 +646,32 @@ function App() {
             <StatCard label="Flagged Transactions" value={dailyStat?.flaggedTransactions ?? '—'} accent />
             <StatCard label="Cases Created" value={dailyStat?.casesCreated ?? '—'} />
             <StatCard label="Notifications Sent" value={dailyStat?.notificationsSent ?? '—'} />
+          </div>
+        </section>
+
+        <section id="health" className="section">
+          <div className="section-head">
+            <h2>Service Health</h2>
+            <span className="pill">{healthLoading ? 'Checking…' : 'Live'}</span>
+          </div>
+          <div className="health-grid">
+            {healthServices.map((service) => {
+              const status = healthStatus[service.key]?.status ?? 'UNKNOWN'
+              return (
+                <div key={service.key} className="health-card">
+                  <div>
+                    <p className="muted">{service.label}</p>
+                    <p className={`health-status ${status.toLowerCase()}`}>{status}</p>
+                  </div>
+                  <button
+                    className="ghost"
+                    onClick={() => window.open(`${service.url}/actuator/health`, '_blank')}
+                  >
+                    Health
+                  </button>
+                </div>
+              )
+            })}
           </div>
         </section>
 

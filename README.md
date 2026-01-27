@@ -103,6 +103,22 @@ docker compose up -d --build
 
 ---
 
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-health-checks)
+
+## ➤ ✅ Health checks
+
+```bash
+curl -s http://localhost:8081/actuator/health | jq .
+curl -s http://localhost:8082/actuator/health | jq .
+curl -s http://localhost:8083/actuator/health | jq .
+curl -s http://localhost:8084/actuator/health | jq .
+curl -s http://localhost:8085/actuator/health | jq .
+curl -s http://localhost:8086/actuator/health | jq .
+curl -s http://localhost:8087/actuator/health | jq .
+```
+
+---
+
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-run-the-ui-live-dashboard)
 
@@ -252,5 +268,4 @@ cd services/reporting-service
 ## ➤ License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
 
