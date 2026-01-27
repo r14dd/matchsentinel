@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:wght@500;700&display=swap');
 
 :root {
-  --ink: #0d1020;
-  --paper: #f6f3ee;
-  --cream: #f8f4ee;
-  --accent: #ffb86c;
-  --accent-soft: #ffd6cc;
-  --sky: #b3d9ff;
+  --ink: #0b1120;
+  --paper: #070b16;
+  --cream: #eef1f6;
+  --accent: #ff9a62;
+  --accent-soft: #ffc8a9;
+  --sky: #5c7dff;
   font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
-  color: var(--ink);
+  color: var(--cream);
   background-color: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,9 +23,11 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 20% 20%, var(--accent) 0%, transparent 38%),
-    radial-gradient(circle at 80% 10%, var(--sky) 0%, transparent 40%),
-    linear-gradient(180deg, var(--paper) 0%, #f2efe9 50%, #efe7dc 100%);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 136, 94, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 88% 16%, rgba(92, 125, 255, 0.28) 0%, transparent 48%),
+    radial-gradient(circle at 50% 90%, rgba(24, 193, 140, 0.18) 0%, transparent 45%),
+    linear-gradient(160deg, #05070f 0%, #0a0f1d 45%, #0b1427 100%);
 }
 
 img {

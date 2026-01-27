@@ -1,0 +1,13 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="16" fill="#0B1120"/>
+  <defs>
+    <linearGradient id="ms-grad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF9A62"/>
+      <stop offset="1" stop-color="#5C7DFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 7L52 15V30C52 41.5 43.2 51.4 32 56C20.8 51.4 12 41.5 12 30V15L32 7Z" fill="url(#ms-grad)"/>
+  <text x="32" y="36" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="18" font-weight="700" fill="#0B1120">
+    MS
+  </text>
+</svg>
