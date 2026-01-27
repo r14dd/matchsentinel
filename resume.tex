@@ -1,0 +1,238 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape Riad Mukhtarov} \\ \vspace{1pt}
+    \small \underline{+994(50)-899-8676} $|$ 
+    \href{mailto:riadmukh@gmail.com}{\underline{riadmukh@gmail.com}} $|$ 
+    \href{https://linkedin.com/in/riadmukhtarov}{\underline{LinkedIn}} $|$
+    \href{https://r14dd.github.io/}{\underline{Portfolio}}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University at Buffalo, New York - \textit{BS in Computer Science}}{Aug 2020 -- May 2024}
+      {Awards: Undergraduate Teaching Assistant Award, Multiple Dean's List Honors}
+      {Buffalo, New York}
+  \resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Information and Communication Technology (ICT) Assistant}{Oct 2024 -- Nov 2024}
+      {COP29 United Nations Climate Change Conference}{Baku, Azerbaijan}
+      \resumeItemListStart
+        \resumeItem{Supported ICT operations for 500+ UN delegates by managing core network, AV, and collaboration systems}
+        
+        \resumeItem{Resolved hybrid session issues in real time, preventing delays and ensuring smooth communication}
+        \resumeItem{Improved system security through stronger access controls, device hardening, and data handling practices}
+        \resumeItem{Deployed and optimized hardware and software with vendors, increasing reliability and reducing repeat issues}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Head Teaching Assistant - Data Structures}{Aug 2022 -- May 2024}
+      {State University of New York at Buffalo}{Buffalo, New York}
+      \resumeItemListStart
+        \resumeItem{Led data structures instruction (asymptotics, graphs, trees, hashing) in Scala/Java for ~1,000 students}
+        \resumeItem{Managed 20 TAs, coordinated labs/exams, and served as the primary liaison between students and faculty}
+        \resumeItem{Built and graded assignments, quizzes, and exams while enforcing academic integrity standards}
+        \resumeItem{Ran weekly reviews and debugging sessions, supporting 200+ students with hands-on help}
+        \resumeItem{Streamlined course logistics and student support workflows to improve consistency and outcomes}
+      \resumeItemListEnd
+      
+% -----------Multiple Positions Heading-----------
+%    \resumeSubSubheading
+%     {Software Engineer I}{Oct 2014 - Sep 2016}
+%     \resumeItemListStart
+%        \resumeItem{Apache Beam}
+%          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
+%     \resumeItemListEnd
+%    \resumeSubHeadingListEnd
+%-------------------------------------------
+
+    \resumeSubheading
+      {Software Engineer}{Sep 2021 -- May 2023}
+      {EZ Pro Billing and Collection Inc.}{New York, New York}
+      \resumeItemListStart
+        \resumeItem{Engineered Python/MongoDB TCP handler and ADA-compliant HTML/CSS/JavaScript, using Agile practices}
+        \resumeItem{Automated team point allocation through dynamic login and registration system, upon successful task completion}
+        \resumeItem{Leveraged WebSockets for real-time chat, reducing workload by 90\%, earning promotion}
+        
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+        {\textbf{MatchSentinel }{\href{https://github.com/r14dd/matchsentinel}{\textit{GitHub}}} $|$ \emph{Java, Spring Boot, RabbitMQ, PostgreSQL, Liquibase, React, TypeScript, Docker}}{Jan 2026}
+           % \resumeItemListStart
+           %  \resumeItem{Built a fraud detection system spanning AI scoring, rule engine flags, case ops, notifications, and reporting}
+           %  \resumeItem{Implemented per-service persistence with Liquibase and idempotent reporting updates}
+           %  \resumeItem{Delivered a live analyst dashboard with filters, drill-downs, and a pipeline simulator to trigger end-to-end flow}
+           % \resumeItemListEnd
+           \resumeItemListStart
+            \resumeItem{Built a fraud pipeline with REST APIs and RabbitMQ across AI, rules, cases, notifications, and reporting}
+            \resumeItem{Implemented per-service persistence with Liquibase and idempotent reporting updates for reliable event handling}
+            \resumeItem{Delivered a live analyst dashboard with filters, drill-downs, and a pipeline simulator for end-to-end flow}
+           \resumeItemListEnd
+      \resumeProjectHeading
+        {\textbf{FinFlow Wallet API }{\href{https://github.com/r14dd/finflow}{\textit{GitHub}}} $|$ \emph{Java, Spring Boot, Spring Security, JWT, MySQL, JPA, JUnit}}{Jan 2026}
+           \resumeItemListStart
+            \resumeItem{Implemented secure RESTful authentication and authorization using JWT-based stateless sessions}
+            \resumeItem{Designed and optimized relational data models with JPA/Hibernate and authored SQL-backed repository queries}
+            \resumeItem{Applied security practices including password hashing, token expiration, and request-level authentication filtering}
+            \resumeItem{Developed integration tests to validate login, token issuance, and protected endpoint access}
+           \resumeItemListEnd
+           \resumeProjectHeading
+        {\textbf{Raft-based Consensus Algorithm} $|$ \emph{Go, UDP, Protobuf}}{May 2024}
+          \resumeItemListStart
+            \resumeItem{ Implemented a Raft-based algorithm, managing leader election, log replication, and state machine transitions}
+            \resumeItem {Engineered fault-tolerant consensus protocol for enhanced system fault tolerance and consistency across the cluster}
+            \resumeItem{Developed and tested the Raft server to handle concurrent operations and client interactions efficiently}
+          \resumeItemListEnd
+      \resumeProjectHeading
+        {\textbf{Distributed Hash Table} $|$ \emph{Go, TCP, Protobuf}}{Feb 2024}
+          \resumeItemListStart
+            \resumeItem{Built a peer-to-peer storage system using Kademlia routing for $O(\log n)$ node lookups}
+            \resumeItem{Optimized data reliability with a recursive search algorithm to maintain dynamic network connectivity}
+            \resumeItem{Designed a Protobuf-based message protocol for high-performance data retrieval across multiple platforms}
+            \resumeItem{Integrated and tested nodes to ensure scalability and consistency in simulated distributed environments}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+
+
+%
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \textbf{Programming Languages}{: Java, Python, Go \textit{(familiar:} Rust, JavaScript, Scala, C, PHP)} \\
+        \textbf{Backend Development}{: Spring Boot, FastAPI, RESTful APIs, JWT Authentication, RabbitMQ} \\
+        \textbf{Databases \& SQL}{: MySQL, PostgreSQL, MongoDB, JPA/Hibernate, Liquibase, SQL Query Design} \\
+        \textbf{Systems \& Infrastructure}{: Linux, Git/GitHub, Docker, Testcontainers, CI/CD basics, SSH} \\
+    }}
+ \end{itemize}
+
+
+%-------------------------------------------
+\end{document}
