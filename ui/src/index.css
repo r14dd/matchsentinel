@@ -30,6 +30,10 @@ body {
     linear-gradient(160deg, #05070f 0%, #0a0f1d 45%, #0b1427 100%);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 img {
   max-width: 100%;
   display: block;
