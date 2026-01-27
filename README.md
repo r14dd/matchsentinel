@@ -1,5 +1,4 @@
-<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️--><div align="center">
-
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-matchsentinel)
 
@@ -10,12 +9,14 @@
 
 Built as a production‑style, end‑to‑end system with Spring Boot microservices, RabbitMQ, PostgreSQL + Liquibase, and a cinematic React + Vite analyst dashboard.
 
+<p align="center">
 [![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=fff)](#)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.x-6DB33F?logo=springboot&logoColor=fff)](#)
 [![RabbitMQ](https://img.shields.io/badge/RabbitMQ-Event%20Bus-FF6600?logo=rabbitmq&logoColor=fff)](#)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Data-336791?logo=postgresql&logoColor=fff)](#)
 [![Vite](https://img.shields.io/badge/Vite-UI-646CFF?logo=vite&logoColor=fff)](#)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?logo=typescript&logoColor=fff)](#)
+</p>
 
 <p align="center">
   <img src="docs/demo-ui.gif" width="1000" alt="MatchSentinel Live Dashboard Demo"/>
@@ -92,11 +93,9 @@ MatchSentinel is a real, event‑driven fraud defense platform that **actually r
 
 ## ➤ 🚀 Quickstart (Docker)
 
-<div align="left">
 ```bash
 docker compose up -d --build
 ```
-</div>
 
 ---
 
@@ -105,22 +104,17 @@ docker compose up -d --build
 
 ## ➤ 🎛️ Run the UI (Live Dashboard)
 
-<div align="left">
 
-<div align="left">
 ```bash
 cd ui
 npm install
 npm run dev
 ```
-</div>
-</div>
 
 Open: **http://localhost:5173**
 
 Ensure these env vars exist in `ui/.env`:
 
-<div align="left">
 ```
 VITE_TRANSACTION_SERVICE_URL=http://localhost:8082
 VITE_RULE_ENGINE_URL=http://localhost:8083
@@ -129,7 +123,6 @@ VITE_NOTIFICATION_SERVICE_URL=http://localhost:8085
 VITE_REPORTING_SERVICE_URL=http://localhost:8086
 VITE_AI_SERVICE_URL=http://localhost:8087
 ```
-</div>
 
 ---
 
@@ -141,12 +134,13 @@ VITE_AI_SERVICE_URL=http://localhost:8087
 In the UI, open **Pipeline Simulator** and click **Run Pipeline**.
 
 Expected flow:
-1) Transaction created
-2) AI score generated
-3) Rule Engine flag created
-4) Case opened
-5) Notification sent
-6) Reporting counters updated
+
+- Transaction created
+- AI score generated
+- Rule Engine flag created
+- Case opened
+- Notification sent
+- Reporting counters updated
 
 ---
 
@@ -155,7 +149,6 @@ Expected flow:
 
 ## ➤ 🔬 Manual smoke test (API)
 
-<div align="left">
 ```bash
 
 # ➤ Create a transaction
@@ -185,7 +178,6 @@ curl -s "http://localhost:8085/api/notifications" | jq .
 # ➤ Reporting
 curl -s "http://localhost:8086/api/reports/daily?date=2026-01-26" | jq .
 ```
-</div>
 
 ---
 
@@ -197,12 +189,10 @@ curl -s "http://localhost:8086/api/reports/daily?date=2026-01-26" | jq .
 Each service supports unit + integration tests (Testcontainers for Postgres/RabbitMQ).
 
 Example:
-<div align="left">
 ```bash
 cd services/reporting-service
 ./mvnw -Pintegration-tests -Dtest=ReportingIntegrationTest test
 ```
-</div>
 
 ---
 
@@ -260,4 +250,3 @@ cd services/reporting-service
 [MIT](https://choosealicense.com/licenses/mit/)
 
 
-</div>
