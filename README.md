@@ -23,8 +23,9 @@ Built as a production‑style, end‑to‑end system with Spring Boot microservi
 </div>
 
 <p align="center">
-  <img src="docs/demo-ui.gif" width="1000" alt="MatchSentinel Live Dashboard Demo"/>
+  <img src="docs/aws-demo-ui.gif" width="1000" alt="MatchSentinel Live Dashboard Demo (AWS EC2)"/>
 </p>
+<p align="center"><em>Recorded against a live AWS EC2 deployment.</em></p>
 
 ---
 
@@ -119,57 +120,44 @@ curl -s http://localhost:8087/actuator/health | jq .
 
 ---
 
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-deployment-vm-quickstart)
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#-deployment-aws-ec2)
 
-## ➤ ☁️ Deployment (VM Quickstart)
+## ➤ ☁️ Deployment (AWS EC2)
 
-> Target: a single cloud VM (AWS EC2 / Azure VM / GCP Compute) running Docker + Docker Compose.
+This demo was deployed on **AWS EC2** and recorded from a live VM environment.
 
-### 1) Install Docker + Compose
-Use your provider’s official install guide for the VM OS.
+### 1) Launch EC2
+- Instance type: **t3.small** (t3.medium if builds are slow)
+- OS: **Ubuntu 22.04/24.04**
+- Security Group inbound:
+  - `22` (SSH)
+  - `8081–8087` (services)
+  - `15672` (RabbitMQ UI, optional)
 
-### 2) Clone & start
+### 2) Install Docker + Compose (on the VM)
+```bash
+sudo apt update
+sudo apt install -y docker.io docker-compose git
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+### 3) Deploy
 ```bash
 git clone https://github.com/r14dd/matchsentinel.git
 cd matchsentinel
-docker compose up -d --build
+docker-compose up -d --build
 ```
 
-### 3) Required ports (security group / firewall)
-```
-8081-8087  (services)
-5433-5439  (Postgres)  # optional if DBs are only internal
-5672       (RabbitMQ)
-15672      (RabbitMQ UI)
-5173       (UI dev server, optional)
-```
-
-> Recommended: expose only 8081–8087 (and 5173 if needed). Keep Postgres/RabbitMQ private or use managed services (RDS / Cloud SQL / CloudAMQP).
-
-### 4) Production envs (recommended)
-Set these for each service (via `docker-compose.yml` or env files):
-```
-SPRING_PROFILES_ACTIVE=prod
-RABBITMQ_HOST=rabbitmq
-RABBITMQ_USER=guest
-RABBITMQ_PASSWORD=guest
-APP_CORS_ALLOWED_ORIGINS=http://<your-vm-ip>:5173
-```
-
-Database envs per service (examples):
-```
-AUTH_DB_URL=jdbc:postgresql://postgres-auth:5432/matchsentinel_auth
-TRANSACTION_DB_URL=jdbc:postgresql://postgres-transaction:5432/matchsentinel_transaction
-RULE_ENGINE_DB_URL=jdbc:postgresql://postgres-rule-engine:5432/matchsentinel_rule_engine
-CASE_DB_URL=jdbc:postgresql://postgres-case:5432/matchsentinel_cases
-NOTIFICATION_DB_URL=jdbc:postgresql://postgres-notification:5432/matchsentinel_notifications
-REPORTING_DB_URL=jdbc:postgresql://postgres-reporting:5432/matchsentinel_reporting
-SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-ai:5432/matchsentinel_ai
-```
-
-### 5) Verify health
+### 4) Verify
 ```bash
-curl -s http://<your-vm-ip>:8082/actuator/health | jq .
+curl -s http://<your-ec2-ip>:8082/actuator/health | jq .
+```
+
+### 5) Run UI locally against the VM
+In `ui/.env`, point all service URLs to your **EC2 public IPv4**, then:
+```bash
+npm run dev
 ```
 
 ---
