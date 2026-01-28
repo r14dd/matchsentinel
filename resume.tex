@@ -138,11 +138,10 @@
       {Information and Communication Technology (ICT) Assistant}{Oct 2024 -- Nov 2024}
       {COP29 United Nations Climate Change Conference}{Baku, Azerbaijan}
       \resumeItemListStart
-        \resumeItem{Supported ICT operations for 500+ UN delegates by managing core network, AV, and collaboration systems}
-        
-        \resumeItem{Resolved hybrid session issues in real time, preventing delays and ensuring smooth communication}
-        \resumeItem{Improved system security through stronger access controls, device hardening, and data handling practices}
-        \resumeItem{Deployed and optimized hardware and software with vendors, increasing reliability and reducing repeat issues}
+        \resumeItem{Supported ICT operations for 500+ international delegates in a mission-critical environment}
+        \resumeItem{Resolved real-time infrastructure and hybrid session incidents under strict availability requirements}
+        \resumeItem{Assisted with access control, device hardening, and secure system handling}
+        \resumeItem{Collaborated with vendors and technical teams to ensure uninterrupted operations}
       \resumeItemListEnd
 
     \resumeSubheading
@@ -183,39 +182,33 @@
 \section{Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
-        {\textbf{MatchSentinel }{\href{https://github.com/r14dd/matchsentinel}{\textit{GitHub}}} $|$ \emph{Java, Spring Boot, RabbitMQ, PostgreSQL, Liquibase, React, TypeScript, Docker}}{Jan 2026}
-           % \resumeItemListStart
-           %  \resumeItem{Built a fraud detection system spanning AI scoring, rule engine flags, case ops, notifications, and reporting}
-           %  \resumeItem{Implemented per-service persistence with Liquibase and idempotent reporting updates}
-           %  \resumeItem{Delivered a live analyst dashboard with filters, drill-downs, and a pipeline simulator to trigger end-to-end flow}
-           % \resumeItemListEnd
+        {\textbf{MatchSentinel }{\href{https://github.com/r14dd/matchsentinel}{\textit{GitHub}}} $|$ \emph{Java, Spring Boot, RabbitMQ, PostgreSQL, Liquibase, Docker, AWS EC2}}{Jan 2026}
            \resumeItemListStart
-            \resumeItem{Built a fraud pipeline with REST APIs and RabbitMQ across AI, rules, cases, notifications, and reporting}
-            \resumeItem{Implemented per-service persistence with Liquibase and idempotent reporting updates for reliable event handling}
-            \resumeItem{Delivered a live analyst dashboard with filters, drill-downs, and a pipeline simulator for end-to-end flow}
+            \resumeItem{Designed an event-driven microservices architecture spanning scoring, rules, cases, notifications, and reporting}
+            \resumeItem{Built async inter-service communication with RabbitMQ and idempotent consumers for safe reprocessing}
+            \resumeItem{Implemented per-service databases with Liquibase migrations plus environment-based configuration}
+            \resumeItem{Deployed to AWS EC2 using Docker Compose, Linux networking, and public service endpoints}
+            \resumeItem{Validated production-like deployment using cloud-based infrastructure and containerized services}
            \resumeItemListEnd
       \resumeProjectHeading
-        {\textbf{FinFlow Wallet API }{\href{https://github.com/r14dd/finflow}{\textit{GitHub}}} $|$ \emph{Java, Spring Boot, Spring Security, JWT, MySQL, JPA, JUnit}}{Jan 2026}
+        {\textbf{FinFlow — Wallet API }{\href{https://github.com/r14dd/finflow}{\textit{GitHub}}} $|$ \emph{Java, Spring Boot, Spring Security, JWT, MySQL, JPA}}{Jan 2026}
            \resumeItemListStart
-            \resumeItem{Implemented secure RESTful authentication and authorization using JWT-based stateless sessions}
-            \resumeItem{Designed and optimized relational data models with JPA/Hibernate and authored SQL-backed repository queries}
-            \resumeItem{Applied security practices including password hashing, token expiration, and request-level authentication filtering}
-            \resumeItem{Developed integration tests to validate login, token issuance, and protected endpoint access}
+            \resumeItem{Implemented secure authentication and authorization using JWT-based stateless sessions}
+            \resumeItem{Designed relational data models using JPA/Hibernate with optimized repository queries}
+            \resumeItem{Applied security best practices including password hashing, token expiration, and request filtering}
+            \resumeItem{Developed integration tests to validate authentication flows and protected endpoints}
            \resumeItemListEnd
-           \resumeProjectHeading
-        {\textbf{Raft-based Consensus Algorithm} $|$ \emph{Go, UDP, Protobuf}}{May 2024}
+      \resumeProjectHeading
+        {\textbf{Raft-Based Consensus Algorithm} $|$ \emph{Go, UDP, Protobuf}}{May 2024}
           \resumeItemListStart
-            \resumeItem{ Implemented a Raft-based algorithm, managing leader election, log replication, and state machine transitions}
-            \resumeItem {Engineered fault-tolerant consensus protocol for enhanced system fault tolerance and consistency across the cluster}
-            \resumeItem{Developed and tested the Raft server to handle concurrent operations and client interactions efficiently}
+            \resumeItem{Implemented Raft consensus with leader election, log replication, and fault tolerance}
+            \resumeItem{Built concurrent server components to maintain consistency across distributed nodes}
           \resumeItemListEnd
       \resumeProjectHeading
-        {\textbf{Distributed Hash Table} $|$ \emph{Go, TCP, Protobuf}}{Feb 2024}
+        {\textbf{Distributed Hash Table (Kademlia)} $|$ \emph{Go, TCP, Protobuf}}{Feb 2024}
           \resumeItemListStart
-            \resumeItem{Built a peer-to-peer storage system using Kademlia routing for $O(\log n)$ node lookups}
-            \resumeItem{Optimized data reliability with a recursive search algorithm to maintain dynamic network connectivity}
-            \resumeItem{Designed a Protobuf-based message protocol for high-performance data retrieval across multiple platforms}
-            \resumeItem{Integrated and tested nodes to ensure scalability and consistency in simulated distributed environments}
+            \resumeItem{Implemented a peer-to-peer distributed storage system using Kademlia routing}
+            \resumeItem{Achieved efficient $O(\log n)$ lookups and resilient data routing across nodes}
           \resumeItemListEnd
     \resumeSubHeadingListEnd
 
@@ -226,12 +219,17 @@
 \section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-        \textbf{Programming Languages}{: Java, Python, Go \textit{(familiar:} Rust, JavaScript, Scala, C, PHP)} \\
-        \textbf{Backend Development}{: Spring Boot, FastAPI, RESTful APIs, JWT Authentication, RabbitMQ} \\
-        \textbf{Databases \& SQL}{: MySQL, PostgreSQL, MongoDB, JPA/Hibernate, Liquibase, SQL Query Design} \\
-        \textbf{Systems \& Infrastructure}{: Linux, Git/GitHub, Docker, Testcontainers, CI/CD basics, SSH} \\
+        \textbf{Languages}{: Java, Python, Go (familiar: Rust, JavaScript, Scala, C)} \\
+        \textbf{Backend}{: Spring Boot, Spring Security, REST APIs, JWT, FastAPI} \\
+        \textbf{Architecture}{: Microservices, Event-Driven Systems, Async Messaging, Idempotent Consumers, Distributed Systems, Audit Logging, System Reliability} \\
+        \textbf{Databases}{: PostgreSQL, MySQL, MongoDB, JPA/Hibernate, Liquibase, SQL} \\
+        \textbf{Cloud/Infra}{: AWS EC2, Linux, Docker, Docker Compose, SSH, Environment-Based Configuration
+} \\
+        \textbf{Testing/Tools}{: JUnit, Testcontainers, Integration Testing, Git, GitHub, CI/CD 
+        Basics} \\
     }}
  \end{itemize}
+
 
 
 %-------------------------------------------
