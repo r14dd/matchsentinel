@@ -10,16 +10,15 @@
 Built as a production‑style, end‑to‑end system with Spring Boot microservices, RabbitMQ, PostgreSQL + Liquibase, and a cinematic React + Vite analyst dashboard.
 
 
-<p align="center" width="100%">
-  
-[![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=fff)](#)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.x-6DB33F?logo=springboot&logoColor=fff)](#)
-[![RabbitMQ](https://img.shields.io/badge/RabbitMQ-Event%20Bus-FF6600?logo=rabbitmq&logoColor=fff)](#)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Data-336791?logo=postgresql&logoColor=fff)](#)
-[![Vite](https://img.shields.io/badge/Vite-UI-646CFF?logo=vite&logoColor=fff)](#)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?logo=typescript&logoColor=fff)](#)
-
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-111827?style=for-the-badge&logo=openjdk&logoColor=ED8B00" alt="Java" />
+  <img src="https://img.shields.io/badge/Spring%20Boot-111827?style=for-the-badge&logo=springboot&logoColor=6DB33F" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/RabbitMQ-111827?style=for-the-badge&logo=rabbitmq&logoColor=FF6600" alt="RabbitMQ" />
+  <img src="https://img.shields.io/badge/PostgreSQL-111827?style=for-the-badge&logo=postgresql&logoColor=336791" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Vite-111827?style=for-the-badge&logo=vite&logoColor=646CFF" alt="Vite" />
+  <img src="https://img.shields.io/badge/TypeScript-111827?style=for-the-badge&logo=typescript&logoColor=3178C6" alt="TypeScript" />
 </p>
+
 </div>
 
 <p align="center">
